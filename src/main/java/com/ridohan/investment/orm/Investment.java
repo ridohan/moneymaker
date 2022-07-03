@@ -27,6 +27,11 @@ public class Investment extends PanacheEntity {
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true,fetch = FetchType.EAGER)
     public Set<InvestmentValueRecord> records = new HashSet<>();
 
+
+    public static Investment findByName(String name){
+        return find("name", name).firstResult();
+    }
+
     public Investment(String name) {
         this.name = name;
     }

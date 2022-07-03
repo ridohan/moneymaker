@@ -23,12 +23,15 @@ public class InitDummyDataResource {
     @GET
     @Transactional
     public List<Investment> init() {
-        Investment degiro = new Investment("DEGIRO");
-        addInvestmentValueRecord(LocalDate.of(2020,01,01),100,110,degiro);
-        addInvestmentValueRecord(LocalDate.of(2022,05,01),100,50,degiro);
-        addInvestmentValueRecord(LocalDate.of(2022,07,01),100,200,degiro);
+        if(Investment.findByName("DEGIRO") == null){
+            Investment degiro = new Investment("DEGIRO");
+            addInvestmentValueRecord(LocalDate.of(2020,01,01),100,110,degiro);
+            addInvestmentValueRecord(LocalDate.of(2022,05,01),100,50,degiro);
+            addInvestmentValueRecord(LocalDate.of(2022,07,01),100,200,degiro);
 
-        degiro.persistAndFlush();
+            degiro.persistAndFlush();
+        }
+
         return Investment.listAll();
 
     }
