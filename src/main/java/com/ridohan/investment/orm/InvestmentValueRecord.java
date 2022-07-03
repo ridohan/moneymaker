@@ -33,7 +33,7 @@ public class InvestmentValueRecord extends PanacheEntity {
     }
 
     public double getYield() {
-        return value/investedAmount;
+        return (value/investedAmount)-1;
     }
 
     //    public InvestmentCategory getCategory() {
