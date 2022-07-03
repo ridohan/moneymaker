@@ -2,37 +2,56 @@ package com.ridohan.investment.resources;
 
 
 import com.ridohan.investment.orm.Investment;
-import io.quarkus.hibernate.reactive.panache.Panache;
+import com.ridohan.investment.service.InvestmentService;
 import io.quarkus.panache.common.Sort;
-import io.smallrye.mutiny.Uni;
+import org.jboss.logging.annotations.Param;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
-import java.net.URI;
+import javax.inject.Inject;
+import javax.validation.Valid;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/investments")
-@ApplicationScoped
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class InvestmentResource {
+
+    @Inject
+    InvestmentService investmentService;
 
 
     @GET
-    public Uni<List<Investment>> get() {
-        return Investment.listAll(Sort.by("name"));
+    public List<Investment> get() {
+        return Investment.listAll();
     }
 
     @GET
     @Path("/{id}")
-    public Uni<Investment> getSingle(Long id) {
+    public Investment get(@PathParam("id") Long id) {
         return Investment.findById(id);
     }
 
-    @POST
-    public Uni<Response> create(Investment investment) {
-        return Panache.<Investment>withTransaction(investment::persist)
-                .onItem().transform(inserted -> Response.created(URI.create("/investments/" + inserted.id)).build());
+
+    @GET
+    @Path("/{id}/yield")
+    public Double  getAverageYield(@PathParam("id")  Long id) {
+
+        Investment investment = Investment.findById(id);
+
+        return investmentService.calculateAverageYield(investment);
     }
+
+    @GET
+    @Path("/{id}/yield/annual/{year}")
+    public Double  getAverageAnnualYield(@PathParam("id")  Long id,@PathParam("year") int year) {
+
+        Investment investment = Investment.findById(id);
+
+        return investmentService.calculateAverageAnnualYield(investment,year);
+    }
+
+
+
+
 }
