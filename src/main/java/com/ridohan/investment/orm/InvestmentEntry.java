@@ -17,12 +17,5 @@ public class InvestmentEntry extends PanacheEntity {
 
 
 
-//    public InvestmentCategory getCategory() {
-//        return category;
-//    }
-//
-//    public void setCategory(InvestmentCategory category) {
-//        this.category = category;
-//    }
 
 }

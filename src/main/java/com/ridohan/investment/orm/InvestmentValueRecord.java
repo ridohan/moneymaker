@@ -36,12 +36,4 @@ public class InvestmentValueRecord extends PanacheEntity {
         return (value/investedAmount)-1;
     }
 
-    //    public InvestmentCategory getCategory() {
-//        return category;
-//    }
-//
-//    public void setCategory(InvestmentCategory category) {
-//        this.category = category;
-//    }
-
 }

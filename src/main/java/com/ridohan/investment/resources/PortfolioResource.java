@@ -3,9 +3,7 @@ package com.ridohan.investment.resources;
 
 import com.ridohan.investment.orm.Investment;
 import com.ridohan.investment.orm.Portfolio;
-import com.ridohan.investment.service.InvestmentService;
 
-import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;

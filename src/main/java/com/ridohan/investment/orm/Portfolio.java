@@ -17,6 +17,12 @@ public class Portfolio extends PanacheEntity {
     @Column(length = 40, unique = true)
     public String owner;
 
+    @Transient
+    public double investedAmount;
+
+    @Transient
+    public double value;
+
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true,fetch = FetchType.EAGER)
     public Set<Investment> investments = new HashSet<>();
 
@@ -30,6 +36,15 @@ public class Portfolio extends PanacheEntity {
 
     public Portfolio() {
 
+    }
+
+
+    public double getInvestedAmount(){
+        return investments.stream().mapToDouble(Investment::getInvestedAmount).sum();
+    }
+
+    public double getValue(){
+        return investments.stream().mapToDouble(Investment::getValue).sum();
     }
 
 }

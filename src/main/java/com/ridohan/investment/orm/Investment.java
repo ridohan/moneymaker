@@ -4,10 +4,7 @@ package com.ridohan.investment.orm;
  import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.*;
- import java.util.ArrayList;
- import java.util.HashSet;
- import java.util.List;
- import java.util.Set;
+ import java.util.*;
 
 @Entity
 @Cacheable
@@ -27,6 +24,12 @@ public class Investment extends PanacheEntity {
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true,fetch = FetchType.EAGER)
     public Set<InvestmentValueRecord> records = new HashSet<>();
 
+    @Transient
+    public double investedAmount;
+
+    @Transient
+    public double value;
+
 
     public static Investment findByName(String name){
         return find("name", name).firstResult();
@@ -38,6 +41,27 @@ public class Investment extends PanacheEntity {
 
     public Investment() {
 
+    }
+
+
+    public double getInvestedAmount(){
+        double result = 0;
+
+        Optional<InvestmentValueRecord> lastRecord = this.records.stream().max(Comparator.comparing(InvestmentValueRecord::getDate));
+        if(lastRecord.isPresent()){
+            result = lastRecord.get().getInvestedAmount();
+        }
+        return result;
+    }
+
+    public double getValue(){
+        double result = 0;
+
+        Optional<InvestmentValueRecord> lastRecord = this.records.stream().max(Comparator.comparing(InvestmentValueRecord::getDate));
+        if(lastRecord.isPresent()){
+            result = lastRecord.get().getValue();
+        }
+        return result;
     }
 
 }

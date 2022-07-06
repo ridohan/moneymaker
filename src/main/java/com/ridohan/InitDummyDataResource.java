@@ -30,6 +30,7 @@ public class InitDummyDataResource {
             portFolio.name = "Portfolio de Red";
             portFolio.owner = "Red";
             addInvestment("DEGIRO", portFolio);
+            addOtherInvestment("Boursorama", portFolio);
 
             portFolio.persist();
         }
@@ -40,8 +41,21 @@ public class InitDummyDataResource {
         if(Investment.findByName(name) == null){
             Investment investment = new Investment(name);
             addInvestmentValueRecord(LocalDate.of(2020,01,01),100,110,investment);
-            addInvestmentValueRecord(LocalDate.of(2022,05,01),100,50,investment);
-            addInvestmentValueRecord(LocalDate.of(2022,07,01),100,200,investment);
+            addInvestmentValueRecord(LocalDate.of(2021,05,01),200,50,investment);
+            addInvestmentValueRecord(LocalDate.of(2022,07,01),300,200,investment);
+
+            investment.persist();
+            portfolio.investments.add(investment);
+        }
+
+    }
+
+    private void addOtherInvestment(String name, Portfolio portfolio){
+        if(Investment.findByName(name) == null){
+            Investment investment = new Investment(name);
+            addInvestmentValueRecord(LocalDate.of(2017,01,01),1000,1100,investment);
+            addInvestmentValueRecord(LocalDate.of(2018,05,01),2000,500,investment);
+            addInvestmentValueRecord(LocalDate.of(2019,07,01),3000,2000,investment);
 
             investment.persist();
             portfolio.investments.add(investment);
