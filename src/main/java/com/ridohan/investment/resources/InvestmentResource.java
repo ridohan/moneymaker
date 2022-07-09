@@ -36,6 +36,13 @@ public class InvestmentResource {
         return Investment.findById(id);
     }
 
+    @POST
+    @Transactional
+    public Response create(Investment investment) {
+        investment.persist();
+        return Response.created(URI.create("/investments/" + investment.id)).build();
+    }
+
     @PUT
     @Path("/{id}")
     @Transactional
@@ -50,23 +57,19 @@ public class InvestmentResource {
         return entity;
     }
 
-    @POST
-    @Transactional
-    public Response create(Investment investment) {
-        investment.persist();
-        return Response.created(URI.create("/investments/" + investment.id)).build();
-    }
-
     @DELETE
     @Path("/{id}")
     @Transactional
-    public void delete(Long id) {
+    public void delete(@PathParam("id") Long id) {
         Investment entity = Investment.findById(id);
         if(entity == null) {
             throw new NotFoundException();
         }
         entity.delete();
     }
+
+
+
     @GET
     @Path("/{id}/yield")
     public Double  getAverageYield(@PathParam("id")  Long id) {

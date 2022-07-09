@@ -6,6 +6,8 @@ import com.ridohan.investment.orm.Portfolio;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.net.URI;
 import java.util.List;
 
 @Path("/portfolios")
@@ -25,6 +27,13 @@ public class PortfolioResource {
         return Portfolio.findById(id);
     }
 
+    @POST
+    @Transactional
+    public Response create(Portfolio portfolio) {
+        portfolio.persist();
+        return Response.created(URI.create("/portfolios/" + portfolio.id)).build();
+    }
+
 
     @PUT
     @Path("/{id}")
@@ -40,6 +49,16 @@ public class PortfolioResource {
         return entity;
     }
 
+    @DELETE
+    @Path("/{id}")
+    @Transactional
+    public void delete(@PathParam("id") Long id) {
+        Portfolio entity = Portfolio.findById(id);
+        if(entity == null) {
+            throw new NotFoundException();
+        }
+        entity.delete();
+    }
 
 
 
