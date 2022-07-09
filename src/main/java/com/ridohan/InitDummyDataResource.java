@@ -84,55 +84,6 @@ public class InitDummyDataResource {
     }
 
 
-//
-//    private void initRecipe(String recipeName, Map<String,Quantity> ingredients ){
-//
-//        Recipe recipe = Recipe.findByName(recipeName);
-//        if(recipe == null){
-//            recipe = new Recipe();
-//            recipe.name = recipeName;
-//
-//            for (Map.Entry<String, Quantity> entry : ingredients.entrySet()) {
-//                RecipeCompound recipeCompound = new RecipeCompound();
-//                recipeCompound.ingredient = findOrCreateIngredient(entry.getKey() );
-//                recipeCompound.quantity = entry.getValue();
-//                recipe.recipeCompounds.add(recipeCompound);
-//            }
-//
-//
-//            recipe.persistAndFlush();
-//
-//        }
-//
-//    }
-//
-//
-//        private void initIngredientFamily(String ingredientFamilyName, List<String> ingredients ){
-//        IngredientFamily ingredientFamily  = IngredientFamily.findByName(ingredientFamilyName);
-//        if(ingredientFamily == null){
-//            ingredientFamily = new IngredientFamily();
-//            ingredientFamily.name = ingredientFamilyName;
-//
-//            for(String ingredientString : ingredients){
-//                Ingredient ingredient  = findOrCreateIngredient(ingredientString);
-//                ingredientFamily.ingredients.add(ingredient);
-//                ingredient.family=ingredientFamily;
-//
-//            }
-//
-//            ingredientFamily.persistAndFlush();
-//        }
-//    }
-//
-//    public Ingredient findOrCreateIngredient(String name){
-//        Ingredient ingredient  = Ingredient.findByName(name);
-//        if(ingredient == null){
-//            ingredient = new Ingredient();
-//            ingredient.name = name;
-//        }
-//        return ingredient;
-//    }
-
 
 
 
