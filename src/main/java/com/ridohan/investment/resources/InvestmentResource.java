@@ -2,14 +2,18 @@ package com.ridohan.investment.resources;
 
 
 import com.ridohan.investment.orm.Investment;
+import com.ridohan.investment.orm.Portfolio;
 import com.ridohan.investment.service.InvestmentService;
 import io.quarkus.panache.common.Sort;
 import org.jboss.logging.annotations.Param;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.net.URI;
 import java.util.List;
 
 @Path("/investments")
@@ -32,7 +36,37 @@ public class InvestmentResource {
         return Investment.findById(id);
     }
 
+    @PUT
+    @Path("/{id}")
+    @Transactional
+    public Investment update(@PathParam("id") Long id, Investment investment) {
+        Investment entity = Investment.findById(id);
+        if(entity == null) {
+            throw new NotFoundException();
+        }
 
+        entity.name = investment.name;
+
+        return entity;
+    }
+
+    @POST
+    @Transactional
+    public Response create(Investment investment) {
+        investment.persist();
+        return Response.created(URI.create("/investments/" + investment.id)).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Transactional
+    public void delete(Long id) {
+        Investment entity = Investment.findById(id);
+        if(entity == null) {
+            throw new NotFoundException();
+        }
+        entity.delete();
+    }
     @GET
     @Path("/{id}/yield")
     public Double  getAverageYield(@PathParam("id")  Long id) {
