@@ -14,4 +14,10 @@ public class InvestmentCategory extends PanacheEntity {
     @Column(length = 40, unique = true)
     public String name;
 
+    public InvestmentCategory(String name) {
+        this.name = name;
+    }
+
+    public InvestmentCategory() {
+    }
 }

@@ -1,6 +1,7 @@
 package com.ridohan;
 
 import com.ridohan.investment.orm.Investment;
+import com.ridohan.investment.orm.InvestmentCategory;
 import com.ridohan.investment.orm.InvestmentValueRecord;
 import com.ridohan.investment.orm.Portfolio;
 
@@ -26,10 +27,16 @@ public class InitDummyDataResource {
     @Transactional
     public List<Portfolio> init() {
         if(Portfolio.findByName("Portfolio de Red") == null) {
+            InvestmentCategory immobilier = new InvestmentCategory("Immobilier");
+            InvestmentCategory assuranceVie = new InvestmentCategory("Assurance Vie");
+            InvestmentCategory bourse = new InvestmentCategory("Bourse");
+            InvestmentCategory crypto = new InvestmentCategory("Crypto");
+            InvestmentCategory.persist(immobilier,assuranceVie,bourse,crypto);
+
             Portfolio portFolio = new Portfolio();
             portFolio.name = "Portfolio de Red";
             portFolio.owner = "Red";
-            addInvestment("DEGIRO", portFolio);
+            addInvestment("DEGIRO",bourse, portFolio);
             addOtherInvestment("Boursorama", portFolio);
 
             portFolio.persist();
@@ -37,9 +44,12 @@ public class InitDummyDataResource {
         return Portfolio.listAll();
 
     }
-    private void addInvestment(String name, Portfolio portfolio){
+
+
+
+    private void addInvestment(String name,InvestmentCategory investmentCategory, Portfolio portfolio){
         if(Investment.findByName(name) == null){
-            Investment investment = new Investment(name);
+            Investment investment = new Investment(name,investmentCategory);
             addInvestmentValueRecord(LocalDate.of(2020,01,01),100,110,investment);
             addInvestmentValueRecord(LocalDate.of(2021,05,01),200,50,investment);
             addInvestmentValueRecord(LocalDate.of(2022,07,01),300,200,investment);

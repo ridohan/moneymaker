@@ -39,6 +39,11 @@ public class Investment extends PanacheEntity {
         this.name = name;
     }
 
+    public Investment(String name,InvestmentCategory investmentCategory) {
+        this.name = name;
+        this.category = investmentCategory;
+    }
+
     public Investment() {
 
     }
