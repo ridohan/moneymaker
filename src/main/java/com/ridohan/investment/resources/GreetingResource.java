@@ -1,4 +1,4 @@
-package com.ridohan;
+package com.ridohan.investment.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

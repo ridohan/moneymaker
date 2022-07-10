@@ -1,4 +1,4 @@
-package com.ridohan;
+package com.ridohan.investment.resources;
 
 import com.ridohan.investment.orm.Investment;
 import com.ridohan.investment.orm.InvestmentCategory;
