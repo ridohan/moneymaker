@@ -56,6 +56,11 @@ public class Portfolio extends PanacheEntity {
         return result;
     }
 
+    public double getYield() {
+        return (getValue()/getInvestedAmount())-1;
+    }
+
+
 
 
 }

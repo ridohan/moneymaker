@@ -43,6 +43,10 @@ public class Investment extends PanacheEntity {
     }
 
 
+    public double getYield() {
+        return (getValue()/getInvestedAmount())-1;
+    }
+
     public double getInvestedAmount(){
         double result = 0;
 
