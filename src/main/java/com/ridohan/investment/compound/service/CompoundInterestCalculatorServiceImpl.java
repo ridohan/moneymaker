@@ -1,12 +1,10 @@
 package com.ridohan.investment.compound.service;
 
 import com.ridohan.investment.compound.orm.CompoundResult;
-import org.javatuples.Triplet;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
