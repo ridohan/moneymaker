@@ -1,6 +1,7 @@
 package com.ridohan.investment.compound.service;
 
 import com.ridohan.investment.compound.orm.CompoundResult;
+import com.ridohan.investment.orm.Investment;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
@@ -30,6 +31,11 @@ public class CompoundInterestCalculatorServiceImpl implements CompoundInterestCa
         }
 
         return results;
+    }
+
+    @Override
+    public List<CompoundResult> calculateCompoundTable(Investment investment, double monthlyInvestment, int nbYears) {
+        return calculateCompoundTable(LocalDate.now(),investment.getYield(),investment.getInvestedAmount(),monthlyInvestment,nbYears);
     }
 
 

@@ -1,7 +1,11 @@
 package com.ridohan.investment.resources;
 
 
+import com.ridohan.investment.compound.orm.CompoundResult;
+import com.ridohan.investment.compound.service.CompoundInterestCalculatorService;
 import com.ridohan.investment.orm.Investment;
+import com.ridohan.investment.orm.InvestmentEntry;
+import com.ridohan.investment.orm.InvestmentValueRecord;
 import com.ridohan.investment.orm.Portfolio;
 import com.ridohan.investment.service.InvestmentService;
 import io.quarkus.panache.common.Sort;
@@ -14,6 +18,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @Path("/investments")
@@ -23,6 +28,9 @@ public class InvestmentResource {
 
     @Inject
     InvestmentService investmentService;
+
+    @Inject
+    CompoundInterestCalculatorService compoundInterestCalculatorService;
 
 
     @GET
@@ -54,6 +62,22 @@ public class InvestmentResource {
 
         entity.name = investment.name;
 
+        return entity;
+    }
+
+
+    @POST
+    @Path("/{id}/records")
+    @Transactional
+    public Investment addValueRecord(@PathParam("id") Long id, InvestmentValueRecord investmentValueRecord) {
+        Investment entity = Investment.findById(id);
+        if(entity == null) {
+            throw new NotFoundException();
+        }
+
+        //investmentEntry.persist();
+        entity.records.add(investmentValueRecord);
+        entity.persist();
         return entity;
     }
 
@@ -90,5 +114,11 @@ public class InvestmentResource {
 
 
 
+    @GET
+    public List<CompoundResult> getCompoundSimulation(@QueryParam("nbYears") int nbYears) {
+
+        return compoundInterestCalculatorService.calculateCompoundTable(LocalDate.now(),0.1,100000,100,10);
+
+    }
 
 }

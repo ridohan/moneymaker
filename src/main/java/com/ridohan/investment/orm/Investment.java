@@ -14,7 +14,6 @@ public class Investment extends PanacheEntity {
     public String name;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
     public InvestmentCategory category;
 
 
@@ -53,6 +52,16 @@ public class Investment extends PanacheEntity {
         Optional<InvestmentValueRecord> lastRecord = this.records.stream().max(Comparator.comparing(InvestmentValueRecord::getDate));
         if(lastRecord.isPresent()){
             result = lastRecord.get().getInvestedAmount();
+        }
+        return result;
+    }
+
+    public double getAverageMonthlyInvestment(){
+        double result = 0;
+
+        OptionalDouble averageFromRecords = this.records.stream().mapToDouble(value -> value.investedAmount).average();
+        if(averageFromRecords.isPresent()){
+            result = averageFromRecords.getAsDouble();
         }
         return result;
     }
