@@ -1,10 +1,13 @@
 package com.ridohan.investment.orm;
 
 
- import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.*;
- import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @Cacheable
@@ -56,15 +59,7 @@ public class Investment extends PanacheEntity {
         return result;
     }
 
-    public double getAverageMonthlyInvestment(){
-        double result = 0;
 
-        OptionalDouble averageFromRecords = this.records.stream().mapToDouble(value -> value.investedAmount).average();
-        if(averageFromRecords.isPresent()){
-            result = averageFromRecords.getAsDouble();
-        }
-        return result;
-    }
 
     public double getValue(){
         double result = 0;
