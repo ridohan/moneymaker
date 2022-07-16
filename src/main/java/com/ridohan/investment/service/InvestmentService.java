@@ -5,7 +5,9 @@ import com.ridohan.investment.orm.InvestmentEntry;
 
 public interface InvestmentService {
 
-    public double calculateAverageYield(Investment investment);
+    double calculateAverageYield(Investment investment);
 
-    public double calculateAverageAnnualYield(Investment investment,int year);
+    double calculateAverageAnnualYield(Investment investment,int year);
+
+    double getAverageMonthlyInvestment(Investment investment);
 }

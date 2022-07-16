@@ -99,15 +99,19 @@ public class InvestmentResource {
     public Double  getAverageYield(@PathParam("id")  Long id) {
 
         Investment investment = Investment.findById(id);
-
+        if(investment == null) {
+            throw new NotFoundException();
+        }
         return investmentService.calculateAverageYield(investment);
     }
 
     @GET
     @Path("/{id}/yield/annual/{year}")
     public Double  getAverageAnnualYield(@PathParam("id")  Long id,@PathParam("year") int year) {
-
         Investment investment = Investment.findById(id);
+        if(investment == null) {
+            throw new NotFoundException();
+        }
 
         return investmentService.calculateAverageAnnualYield(investment,year);
     }
@@ -115,9 +119,17 @@ public class InvestmentResource {
 
 
     @GET
-    public List<CompoundResult> getCompoundSimulation(@QueryParam("nbYears") int nbYears) {
+    @Path("/{id}/compound")
+    public List<CompoundResult> getCompoundSimulation(@PathParam("id")  Long id,@QueryParam("nbYears")  @DefaultValue("10") int nbYears, @QueryParam("monthlyInvestment") Double monthlyInvestment) {
+        Investment investment = Investment.findById(id);
+        if(investment == null) {
+            throw new NotFoundException();
+        }
 
-        return compoundInterestCalculatorService.calculateCompoundTable(LocalDate.now(),0.1,100000,100,10);
+        if(monthlyInvestment == null){
+            monthlyInvestment = investmentService.getAverageMonthlyInvestment(investment);
+        }
+        return compoundInterestCalculatorService.calculateCompoundTable(investment,monthlyInvestment,nbYears);
 
     }
 
