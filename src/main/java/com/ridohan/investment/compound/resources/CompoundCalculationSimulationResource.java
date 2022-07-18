@@ -19,9 +19,9 @@ public class CompoundCalculationSimulationResource {
     CompoundInterestCalculatorService compoundInterestCalculatorService;
 
     @GET
-    public List<CompoundResult> getCompoundSimulation(@QueryParam("nbYears") int nbYears) {
+    public List<CompoundResult> getCompoundSimulation(@QueryParam("nbYears") int nbYears,@QueryParam("yield") double yield,@QueryParam("initialAmount") int initialAmount,@QueryParam("monhtlyInvestment") int monthlyInvestment) {
 
-        return compoundInterestCalculatorService.calculateCompoundTable(LocalDate.now(),0.1,100000,100,10);
+        return compoundInterestCalculatorService.calculateCompoundTable(LocalDate.now(),yield,initialAmount,monthlyInvestment,nbYears);
 
     }
 }
