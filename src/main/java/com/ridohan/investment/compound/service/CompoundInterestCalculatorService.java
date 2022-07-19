@@ -9,5 +9,6 @@ import java.util.List;
 public interface CompoundInterestCalculatorService {
 
     List<CompoundResult> calculateCompoundTable(LocalDate beginDate,double yieldRate, double initialInvestedAmount,double monthlyInvestment,int nbYears);
+    List<CompoundResult> calculateCompoundTableYearly(LocalDate beginDate,double yieldRate, double initialInvestedAmount,double monthlyInvestment,int nbYears);
     List<CompoundResult> calculateCompoundTable(Investment investment, double monthlyInvestment, int nbYears);
 }

@@ -5,8 +5,10 @@ import com.ridohan.investment.orm.Investment;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @ApplicationScoped
@@ -17,7 +19,7 @@ public class CompoundInterestCalculatorServiceImpl implements CompoundInterestCa
         List<CompoundResult> results = new ArrayList<>();
         results.add(new CompoundResult(beginDate,initialInvestedAmount,0));
         double monthlyYieldRate = Math.pow(1D+yieldRate,1D/12D)-1D;
-        for(int i=1;i<nbYears*12;i++){
+        for(int i=1;i<((nbYears*12)+1);i++){
             CompoundResult compoundResult = new CompoundResult();
 
             CompoundResult lastEntry = results.get(results.size()-1);
@@ -31,6 +33,11 @@ public class CompoundInterestCalculatorServiceImpl implements CompoundInterestCa
         }
 
         return results;
+    }
+
+    @Override
+    public List<CompoundResult> calculateCompoundTableYearly(LocalDate beginDate, double yieldRate, double initialInvestedAmount, double monthlyInvestment, int nbYears) {
+        return calculateCompoundTable(beginDate, yieldRate, initialInvestedAmount, monthlyInvestment, nbYears).stream().filter(compoundResult -> compoundResult.getDate().getMonthValue()==(beginDate.getMonthValue()-1)).collect(Collectors.toList());
     }
 
     @Override
