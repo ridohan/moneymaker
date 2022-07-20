@@ -1,6 +1,7 @@
 package com.ridohan.investment.compound.service;
 
 import com.ridohan.investment.compound.orm.CompoundResult;
+import com.ridohan.investment.compound.orm.CompoundSimulationResult;
 import com.ridohan.investment.orm.Investment;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -13,6 +14,13 @@ import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class CompoundInterestCalculatorServiceImpl implements CompoundInterestCalculatorService{
+
+    @Override
+    public CompoundSimulationResult calculateCompoundResults(LocalDate beginDate, double yieldRate, double initialInvestedAmount, double monthlyInvestment, int nbYears) {
+        List<CompoundResult> monthlyResults = calculateCompoundTable(beginDate, yieldRate, initialInvestedAmount, monthlyInvestment, nbYears);
+        List<CompoundResult> yearlResults = calculateCompoundTableYearly(monthlyResults);
+        return new CompoundSimulationResult(monthlyResults,yearlResults,beginDate,yieldRate,initialInvestedAmount,monthlyInvestment,nbYears);
+    }
 
     @Override
     public List<CompoundResult> calculateCompoundTable(LocalDate beginDate, double yieldRate, double initialInvestedAmount, double monthlyInvestment, int nbYears) {
@@ -37,7 +45,13 @@ public class CompoundInterestCalculatorServiceImpl implements CompoundInterestCa
 
     @Override
     public List<CompoundResult> calculateCompoundTableYearly(LocalDate beginDate, double yieldRate, double initialInvestedAmount, double monthlyInvestment, int nbYears) {
-        return calculateCompoundTable(beginDate, yieldRate, initialInvestedAmount, monthlyInvestment, nbYears).stream().filter(compoundResult -> compoundResult.getDate().getMonthValue()==(beginDate.getMonthValue()-1)).collect(Collectors.toList());
+        return calculateCompoundTableYearly(calculateCompoundTable(beginDate, yieldRate, initialInvestedAmount, monthlyInvestment, nbYears));
+    }
+
+    @Override
+    public List<CompoundResult> calculateCompoundTableYearly(List<CompoundResult> monthlyCompoundResults) {
+        LocalDate beginDate = monthlyCompoundResults.get(0).getDate();
+        return monthlyCompoundResults.stream().filter(compoundResult -> compoundResult.getDate().getMonthValue()==(beginDate.getMonthValue())).collect(Collectors.toList());
     }
 
     @Override

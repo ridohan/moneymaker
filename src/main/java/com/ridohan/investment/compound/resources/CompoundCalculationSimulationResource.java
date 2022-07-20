@@ -1,6 +1,7 @@
 package com.ridohan.investment.compound.resources;
 
 import com.ridohan.investment.compound.orm.CompoundResult;
+import com.ridohan.investment.compound.orm.CompoundSimulationResult;
 import com.ridohan.investment.compound.service.CompoundInterestCalculatorService;
 
 import javax.inject.Inject;
@@ -19,9 +20,9 @@ public class CompoundCalculationSimulationResource {
     CompoundInterestCalculatorService compoundInterestCalculatorService;
 
     @GET
-    public List<CompoundResult> getCompoundSimulation(@QueryParam("nbYears") int nbYears,@QueryParam("yield") double yield,@QueryParam("initialAmount") int initialAmount,@QueryParam("monhtlyInvestment") int monthlyInvestment) {
+    public CompoundSimulationResult getCompoundSimulation(@QueryParam("nbYears") int nbYears, @QueryParam("yield") double yield, @QueryParam("initialAmount") int initialAmount, @QueryParam("monhtlyInvestment") int monthlyInvestment) {
 
-        return compoundInterestCalculatorService.calculateCompoundTable(LocalDate.now(),yield,initialAmount,monthlyInvestment,nbYears);
+        return compoundInterestCalculatorService.calculateCompoundResults(LocalDate.now(),yield,initialAmount,monthlyInvestment,nbYears);
 
     }
 
