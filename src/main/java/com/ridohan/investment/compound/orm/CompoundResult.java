@@ -10,11 +10,23 @@ public class CompoundResult {
     private double monthlyInvestment;
     private double totalValue;
 
+    private double totalInvested;
+
+    private double totalInterest;
+
     public CompoundResult(LocalDate date, double investedAmount, double interestAmount, double monthlyInvestment) {
         this.date = date;
         this.investedAmount = investedAmount;
         this.interestAmount = interestAmount;
         this.monthlyInvestment = monthlyInvestment;
+    }
+
+    public CompoundResult(LocalDate date, double investedAmount, double interestAmount, double monthlyInvestment, double totalValue) {
+        this.date = date;
+        this.investedAmount = investedAmount;
+        this.interestAmount = interestAmount;
+        this.monthlyInvestment = monthlyInvestment;
+        this.totalValue = totalValue;
     }
 
     public CompoundResult() {
@@ -59,5 +71,21 @@ public class CompoundResult {
 
     public void setTotalValue(double totalValue) {
         this.totalValue = totalValue;
+    }
+
+    public double getTotalInvested() {
+        return totalInvested;
+    }
+
+    public void setTotalInvested(double totalInvested) {
+        this.totalInvested = totalInvested;
+    }
+
+    public double getTotalInterest() {
+        return totalInterest;
+    }
+
+    public void setTotalInterest(double totalInterest) {
+        this.totalInterest = totalInterest;
     }
 }
