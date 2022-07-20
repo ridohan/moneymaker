@@ -25,7 +25,7 @@ public class CompoundInterestCalculatorServiceImpl implements CompoundInterestCa
     @Override
     public List<CompoundResult> calculateCompoundTable(LocalDate beginDate, double yieldRate, double initialInvestedAmount, double monthlyInvestment, int nbYears) {
         List<CompoundResult> results = new ArrayList<>();
-        results.add(new CompoundResult(beginDate,initialInvestedAmount,0));
+        results.add(new CompoundResult(beginDate,initialInvestedAmount,0,0));
         double monthlyYieldRate = Math.pow(1D+yieldRate,1D/12D)-1D;
         for(int i=1;i<((nbYears*12)+1);i++){
             CompoundResult compoundResult = new CompoundResult();
@@ -36,6 +36,8 @@ public class CompoundInterestCalculatorServiceImpl implements CompoundInterestCa
             compoundResult.setDate(LocalDate.from(beginDate).plusMonths(i));
             compoundResult.setInvestedAmount(lastInvestedValue+monthlyInvestment);
             compoundResult.setInterestAmount(compoundResult.getInvestedAmount()*monthlyYieldRate);
+            compoundResult.setMonthlyInvestment(monthlyInvestment);
+            compoundResult.setTotalValue(compoundResult.getInterestAmount()+compoundResult.getInvestedAmount());
 
             results.add(compoundResult);
         }
