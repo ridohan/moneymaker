@@ -17,16 +17,6 @@ public class CompoundSimulationResult {
     private double monthlyInvestment;
     private int nbYears;
 
-    public CompoundSimulationResult( List<CompoundResult> monthlyResults,List<CompoundResult> yearlyResults) {
-        this.monthlyResults = monthlyResults;
-        this.yearlyResults = yearlyResults;
-        CompoundResult lastResult = monthlyResults.stream().reduce((first, second) -> second)
-                .orElse(null);
-
-        this.totalInterestAmount = lastResult.getInterestAmount();
-        this.totalInvestedAmount = lastResult.getInvestedAmount();
-        this.totalValue = lastResult.getInvestedAmount()+lastResult.getInvestedAmount();
-    }
 
     public CompoundSimulationResult(List<CompoundResult> monthlyResults, List<CompoundResult> yearlyResults, LocalDate beginDate, double yieldRate, double initialInvestedAmount, double monthlyInvestment, int nbYears) {
         this.beginDate = beginDate;
@@ -41,8 +31,8 @@ public class CompoundSimulationResult {
         CompoundResult lastResult = monthlyResults.stream().reduce((first, second) -> second)
                 .orElse(null);
 
-        this.totalInterestAmount = lastResult.getInterestAmount();
-        this.totalInvestedAmount = lastResult.getInvestedAmount();
+        this.totalInterestAmount = lastResult.getTotalInterest();
+        this.totalInvestedAmount = lastResult.getTotalInvested();
         this.totalValue = lastResult.getInvestedAmount()+lastResult.getInterestAmount();
     }
 

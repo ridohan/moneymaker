@@ -60,6 +60,10 @@ public class Portfolio extends PanacheEntity {
         return (getValue()/getInvestedAmount())-1;
     }
 
+    public double getDelta() {
+        return (getValue()-getInvestedAmount());
+    }
+
 
 
 

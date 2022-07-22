@@ -4,7 +4,9 @@ import com.ridohan.investment.orm.Investment;
 import com.ridohan.investment.orm.InvestmentCategory;
 import com.ridohan.investment.orm.InvestmentValueRecord;
 import com.ridohan.investment.orm.Portfolio;
+import com.ridohan.investment.service.DummyDataServiceImpl;
 
+import javax.inject.Inject;
 import javax.sound.sampled.Port;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
@@ -23,65 +25,17 @@ import java.util.List;
 public class InitDummyDataResource {
 
 
+    @Inject
+    DummyDataServiceImpl dummyDataService;
+
     @GET
     @Transactional
     public List<Portfolio> init() {
-        if(Portfolio.findByName("Portfolio de Red") == null) {
-            InvestmentCategory immobilier = new InvestmentCategory("Immobilier");
-            InvestmentCategory assuranceVie = new InvestmentCategory("Assurance Vie");
-            InvestmentCategory bourse = new InvestmentCategory("Bourse");
-            InvestmentCategory crypto = new InvestmentCategory("Crypto");
-            InvestmentCategory.persist(immobilier,assuranceVie,bourse,crypto);
-
-            Portfolio portFolio = new Portfolio();
-            portFolio.name = "Portfolio de Red";
-            portFolio.owner = "Red";
-            addInvestment("DEGIRO",bourse, portFolio);
-            addOtherInvestment("Boursorama",assuranceVie, portFolio);
-
-            portFolio.persist();
-        }
-        return Portfolio.listAll();
+        return  dummyDataService.init();
 
     }
 
 
-
-    private void addInvestment(String name,InvestmentCategory investmentCategory, Portfolio portfolio){
-        if(Investment.findByName(name) == null){
-            Investment investment = new Investment(name,investmentCategory);
-            addInvestmentValueRecord(LocalDate.of(2020,01,01),100,110,investment);
-            addInvestmentValueRecord(LocalDate.of(2021,05,01),200,500,investment);
-            addInvestmentValueRecord(LocalDate.of(2022,07,01),300,2000,investment);
-
-            investment.persist();
-            portfolio.investments.add(investment);
-        }
-
-    }
-
-    private void addOtherInvestment(String name,InvestmentCategory investmentCategory,  Portfolio portfolio){
-        if(Investment.findByName(name) == null){
-            Investment investment = new Investment(name,investmentCategory);
-            addInvestmentValueRecord(LocalDate.of(2017,01,01),1000,1100,investment);
-            addInvestmentValueRecord(LocalDate.of(2018,05,01),2000,500,investment);
-            addInvestmentValueRecord(LocalDate.of(2019,07,01),3000,2000,investment);
-
-            investment.persist();
-            portfolio.investments.add(investment);
-        }
-
-    }
-
-    private void addInvestmentValueRecord(LocalDate date, double investedAmount, double value, Investment investment){
-        InvestmentValueRecord record = new InvestmentValueRecord();
-
-        record.investedAmount=investedAmount;
-        record.date=date;
-        record.value=value;
-        record.persist();
-        investment.records.add(record);
-    }
 
 
 

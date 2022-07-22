@@ -55,7 +55,7 @@ public class CompoundInterestCalculatorServiceImpl implements CompoundInterestCa
             results.add(compoundResult);
         }
 
-        return results.subList(1,results.size());
+        return results.     subList(1,results.size());
     }
 
     @Override
