@@ -75,7 +75,7 @@ public class InvestmentResource {
     @POST
     @Path("/{id}/records")
     @Transactional
-    public Investment addValueRecord(@PathParam("id") Long id, InvestmentValueRecord investmentValueRecord) {
+    public InvestmentValueRecord addValueRecord(@PathParam("id") Long id, InvestmentValueRecord investmentValueRecord) {
         Investment entity = Investment.findById(id);
         if(entity == null) {
             throw new NotFoundException();
@@ -84,7 +84,24 @@ public class InvestmentResource {
         //investmentEntry.persist();
         entity.records.add(investmentValueRecord);
         entity.persist();
-        return entity;
+        return investmentValueRecord;
+    }
+
+    @DELETE
+    @Path("/{id}/records/{recordId}")
+    @Transactional
+    public void deleteRecord(@PathParam("id") Long id,@PathParam("recordId") Long recordId) {
+        Investment entity = Investment.findById(id);
+        if(entity == null) {
+            throw new NotFoundException();
+        }else{
+            InvestmentValueRecord record = InvestmentValueRecord.findById(recordId);
+            if(record == null) {
+                throw new NotFoundException();
+            }
+            record.delete();
+
+        }
     }
 
     @DELETE
