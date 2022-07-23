@@ -40,8 +40,10 @@ public class DummyDataServiceImpl {
         if(Investment.findByName(name) == null){
             Investment investment = new Investment(name,investmentCategory);
             addInvestmentValueRecord(LocalDate.of(2020,01,01),100,110,investment);
+            //addInvestmentValueRecord(LocalDate.of(2018,03,01),200,300,investment);
             addInvestmentValueRecord(LocalDate.of(2021,05,01),200,500,investment);
             addInvestmentValueRecord(LocalDate.of(2022,07,01),300,2000,investment);
+            addInvestmentValueRecord(LocalDate.of(2030,07,01),300,2000,investment);
 
             investment.persist();
             portfolio.investments.add(investment);

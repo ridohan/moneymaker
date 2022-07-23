@@ -4,10 +4,11 @@ import com.ridohan.investment.orm.Investment;
 import com.ridohan.investment.orm.InvestmentValueRecord;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.summingDouble;
+import static java.util.stream.Collectors.*;
 
 @ApplicationScoped
 public class InvestmentServiceImpl implements InvestmentService {
@@ -49,5 +50,10 @@ public class InvestmentServiceImpl implements InvestmentService {
         }
 
         return result;
+    }
+
+    @Override
+    public List<InvestmentValueRecord> getValueRecords(Investment investment) {
+        return investment.records.stream().sorted(Comparator.comparing(InvestmentValueRecord::getDate)).collect(toList());
     }
 }

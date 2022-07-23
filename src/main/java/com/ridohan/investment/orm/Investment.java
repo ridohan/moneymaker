@@ -1,13 +1,11 @@
 package com.ridohan.investment.orm;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.*;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Cacheable
@@ -20,10 +18,12 @@ public class Investment extends PanacheEntity {
     public InvestmentCategory category;
 
 
-    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true,fetch = FetchType.LAZY)
+    @JsonIgnore
     public Set<InvestmentEntry> entries = new HashSet<>();
 
-    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true,fetch = FetchType.LAZY)
+    @JsonIgnore
     public Set<InvestmentValueRecord> records = new HashSet<>();
 
 
@@ -74,4 +74,10 @@ public class Investment extends PanacheEntity {
     public InvestmentCategory getCategory() {
         return category;
     }
+
+    public double getDelta() {
+        return (getValue()-getInvestedAmount());
+    }
+
+
 }

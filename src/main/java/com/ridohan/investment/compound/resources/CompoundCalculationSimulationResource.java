@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 
@@ -20,17 +22,27 @@ public class CompoundCalculationSimulationResource {
     CompoundInterestCalculatorService compoundInterestCalculatorService;
 
     @GET
-    public CompoundSimulationResult getCompoundSimulation(@QueryParam("nbYears") int nbYears, @QueryParam("yield") double yield, @QueryParam("initialAmount") int initialAmount, @QueryParam("monhtlyInvestment") int monthlyInvestment) {
-
-        return compoundInterestCalculatorService.calculateCompoundResults(LocalDate.now(),yield,initialAmount,monthlyInvestment,nbYears);
+    public CompoundSimulationResult getCompoundSimulation(@QueryParam("beginDate") Date beginDate, @QueryParam("nbYears") int nbYears, @QueryParam("yield") double yield, @QueryParam("initialAmount") int initialAmount, @QueryParam("monhtlyInvestment") int monthlyInvestment) {
+        LocalDate beginLocalDate;
+        if(beginDate == null){
+            beginLocalDate = LocalDate.now();
+        }else{
+            beginLocalDate = beginDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+        return compoundInterestCalculatorService.calculateCompoundResults(beginLocalDate,yield,initialAmount,monthlyInvestment,nbYears);
 
     }
 
     @GET
     @Path("/yearly")
-    public List<CompoundResult> getCompoundSimulationYearly(@QueryParam("nbYears") int nbYears,@QueryParam("yield") double yield,@QueryParam("initialAmount") int initialAmount,@QueryParam("monhtlyInvestment") int monthlyInvestment) {
-
-        return compoundInterestCalculatorService.calculateCompoundTableYearly(LocalDate.now(),yield,initialAmount,monthlyInvestment,nbYears);
+    public List<CompoundResult> getCompoundSimulationYearly(@QueryParam("beginDate")  Date beginDate,@QueryParam("nbYears") int nbYears,@QueryParam("yield") double yield,@QueryParam("initialAmount") int initialAmount,@QueryParam("monhtlyInvestment") int monthlyInvestment) {
+        LocalDate beginLocalDate;
+        if(beginDate == null){
+            beginLocalDate = LocalDate.now();
+        }else{
+            beginLocalDate = beginDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+        return compoundInterestCalculatorService.calculateCompoundTableYearly(beginLocalDate,yield,initialAmount,monthlyInvestment,nbYears);
 
     }
 }

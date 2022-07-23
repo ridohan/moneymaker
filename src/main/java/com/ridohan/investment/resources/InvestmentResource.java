@@ -44,6 +44,12 @@ public class InvestmentResource {
         return Investment.findById(id);
     }
 
+    @GET
+    @Path("/{id}/records")
+    public List<InvestmentValueRecord> getRecords(@PathParam("id") Long id) {
+        return investmentService.getValueRecords(Investment.findById(id));
+    }
+
     @POST
     @Transactional
     public Response create(Investment investment) {
