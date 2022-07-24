@@ -52,8 +52,8 @@ public class Investment extends PanacheEntity {
     public double getInvestedAmount(){
         double result = 0;
 
-        Optional<InvestmentValueRecord> lastRecord = this.records.stream().max(Comparator.comparing(InvestmentValueRecord::getDate));
-        if(lastRecord.isPresent()){
+        if(this.records != null && !this.records.isEmpty() ) {
+            Optional<InvestmentValueRecord> lastRecord = this.records.stream().max(Comparator.comparing(InvestmentValueRecord::getDate));
             result = lastRecord.get().getInvestedAmount();
         }
         return result;
@@ -64,8 +64,8 @@ public class Investment extends PanacheEntity {
     public double getValue(){
         double result = 0;
 
-        Optional<InvestmentValueRecord> lastRecord = this.records.stream().max(Comparator.comparing(InvestmentValueRecord::getDate));
-        if(lastRecord.isPresent()){
+        if(this.records != null && !this.records.isEmpty() ) {
+            Optional<InvestmentValueRecord> lastRecord = this.records.stream().max(Comparator.comparing(InvestmentValueRecord::getDate));
             result = lastRecord.get().getValue();
         }
         return result;

@@ -15,5 +15,8 @@ public interface InvestmentService {
     double getAverageMonthlyInvestment(Investment investment);
 
     List<InvestmentValueRecord> getValueRecords(Investment investment);
+    boolean deleteValueRecord(Investment investment,Long investmentValueRecordId);
+
+    boolean deleteValueRecords(Investment investment,List<InvestmentValueRecord> investmentValueRecords);
 
 }

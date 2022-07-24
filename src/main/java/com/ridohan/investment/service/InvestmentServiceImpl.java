@@ -4,6 +4,8 @@ import com.ridohan.investment.orm.Investment;
 import com.ridohan.investment.orm.InvestmentValueRecord;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.NotFoundException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +56,34 @@ public class InvestmentServiceImpl implements InvestmentService {
 
     @Override
     public List<InvestmentValueRecord> getValueRecords(Investment investment) {
-        return investment.records.stream().sorted(Comparator.comparing(InvestmentValueRecord::getDate)).collect(toList());
+        List<InvestmentValueRecord> results = new ArrayList<>();
+        if(investment.records != null && !investment.records.isEmpty() ) {
+            results =  investment.records.stream().sorted(Comparator.comparing(InvestmentValueRecord::getDate)).collect(toList());
+        }
+        return results;
+    }
+
+    @Override
+    public boolean deleteValueRecord(Investment investment,Long investmentValueRecordId) {
+        InvestmentValueRecord record = InvestmentValueRecord.findById(investmentValueRecordId);
+        if (record == null) {
+            throw new NotFoundException();
+        }
+        investment.records.remove(record);
+        return InvestmentValueRecord.deleteById(record.getId());
+    }
+
+    @Override
+    public boolean deleteValueRecords(Investment investment, List<InvestmentValueRecord> investmentValueRecords) {
+        boolean result = true;
+
+        for(InvestmentValueRecord record : investmentValueRecords){
+           boolean deletionSuccess = deleteValueRecord(investment, record.getId());
+           if(!deletionSuccess){
+               result = false;
+           }
+        }
+
+        return result;
     }
 }

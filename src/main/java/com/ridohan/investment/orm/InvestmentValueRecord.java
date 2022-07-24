@@ -36,4 +36,20 @@ public class InvestmentValueRecord extends PanacheEntity {
         return (value/investedAmount)-1;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public void setInvestedAmount(double investedAmount) {
+        this.investedAmount = investedAmount;
+    }
 }

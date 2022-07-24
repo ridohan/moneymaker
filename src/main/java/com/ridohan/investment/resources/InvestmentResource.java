@@ -72,37 +72,7 @@ public class InvestmentResource {
     }
 
 
-    @POST
-    @Path("/{id}/records")
-    @Transactional
-    public InvestmentValueRecord addValueRecord(@PathParam("id") Long id, InvestmentValueRecord investmentValueRecord) {
-        Investment entity = Investment.findById(id);
-        if(entity == null) {
-            throw new NotFoundException();
-        }
 
-        //investmentEntry.persist();
-        entity.records.add(investmentValueRecord);
-        entity.persist();
-        return investmentValueRecord;
-    }
-
-    @DELETE
-    @Path("/{id}/records/{recordId}")
-    @Transactional
-    public void deleteRecord(@PathParam("id") Long id,@PathParam("recordId") Long recordId) {
-        Investment entity = Investment.findById(id);
-        if(entity == null) {
-            throw new NotFoundException();
-        }else{
-            InvestmentValueRecord record = InvestmentValueRecord.findById(recordId);
-            if(record == null) {
-                throw new NotFoundException();
-            }
-            record.delete();
-
-        }
-    }
 
     @DELETE
     @Path("/{id}")
@@ -154,6 +124,63 @@ public class InvestmentResource {
         }
         return compoundInterestCalculatorService.calculateCompoundTable(investment,monthlyInvestment,nbYears);
 
+    }
+
+
+    @POST
+    @Path("/{id}/records")
+    @Transactional
+    public InvestmentValueRecord addValueRecord(@PathParam("id") Long id, InvestmentValueRecord investmentValueRecord) {
+        Investment entity = Investment.findById(id);
+        if(entity == null) {
+            throw new NotFoundException();
+        }
+
+        entity.records.add(investmentValueRecord);
+        entity.persist();
+        return investmentValueRecord;
+    }
+
+    @PUT
+    @Path("/{id}/records")
+    @Transactional
+    public void editRecord(@PathParam("id") Long id, InvestmentValueRecord record) {
+        Investment entity = Investment.findById(id);
+        if(entity == null) {
+            throw new NotFoundException();
+        }else{
+            InvestmentValueRecord recordFromDB = InvestmentValueRecord.findById(record.id);
+            if(record == null) {
+                throw new NotFoundException();
+            }
+            recordFromDB.setDate(record.getDate());
+            recordFromDB.setValue(record.getValue());
+            recordFromDB.setInvestedAmount(record.getInvestedAmount());
+        }
+    }
+
+    @DELETE
+    @Path("/{id}/records/{recordId}")
+    @Transactional
+    public void deleteRecord(@PathParam("id") Long id,@PathParam("recordId") Long recordId) {
+        Investment investmentEntity = Investment.findById(id);
+        if(investmentEntity == null) {
+            throw new NotFoundException();
+        }else{
+             investmentService.deleteValueRecord(investmentEntity,recordId);
+        }
+    }
+
+    @DELETE
+    @Path("/{id}/records")
+    @Transactional
+    public void deleteRecords(@PathParam("id") Long id,List<InvestmentValueRecord> records) {
+        Investment investmentEntity = Investment.findById(id);
+        if(investmentEntity == null) {
+            throw new NotFoundException();
+        }else{
+            investmentService.deleteValueRecords(investmentEntity,records);
+        }
     }
 
 }
