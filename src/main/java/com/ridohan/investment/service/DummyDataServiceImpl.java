@@ -28,17 +28,17 @@ public class DummyDataServiceImpl {
             Portfolio portFolio = new Portfolio();
             portFolio.name = PORTFOLIO_NAME;
             portFolio.owner = "Red";
-            addInvestment("DEGIRO",bourse, portFolio);
-            addOtherInvestment("Boursorama",assuranceVie, portFolio);
+            addInvestment("DEGIRO",bourse, portFolio,LocalDate.of(2020,02,20));
+            addOtherInvestment("Boursorama",assuranceVie, portFolio,LocalDate.of(2015,03,21));
 
             portFolio.persist();
         }
         return Portfolio.listAll();
     }
 
-    private void addInvestment(String name,InvestmentCategory investmentCategory, Portfolio portfolio){
+    private void addInvestment(String name,InvestmentCategory investmentCategory, Portfolio portfolio, LocalDate creationDate){
         if(Investment.findByName(name) == null){
-            Investment investment = new Investment(name,investmentCategory);
+            Investment investment = new Investment(name,investmentCategory,creationDate);
             addInvestmentValueRecord(LocalDate.of(2020,01,01),100,110,investment);
             //addInvestmentValueRecord(LocalDate.of(2018,03,01),200,300,investment);
             addInvestmentValueRecord(LocalDate.of(2021,05,01),200,500,investment);
@@ -51,9 +51,9 @@ public class DummyDataServiceImpl {
 
     }
 
-    private void addOtherInvestment(String name,InvestmentCategory investmentCategory,  Portfolio portfolio){
+    private void addOtherInvestment(String name,InvestmentCategory investmentCategory,  Portfolio portfolio, LocalDate creationDate){
         if(Investment.findByName(name) == null){
-            Investment investment = new Investment(name,investmentCategory);
+            Investment investment = new Investment(name,investmentCategory,creationDate);
             addInvestmentValueRecord(LocalDate.of(2017,01,01),1000,1100,investment);
             addInvestmentValueRecord(LocalDate.of(2018,05,01),2000,500,investment);
             addInvestmentValueRecord(LocalDate.of(2019,07,01),3000,2000,investment);

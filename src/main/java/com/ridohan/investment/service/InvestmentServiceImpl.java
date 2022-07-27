@@ -5,10 +5,12 @@ import com.ridohan.investment.orm.InvestmentValueRecord;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.NotFoundException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.*;
 
@@ -53,6 +55,22 @@ public class InvestmentServiceImpl implements InvestmentService {
 
         return result;
     }
+
+    @Override
+    public double getAverageInvestedAmountMonthly(Investment investment)
+    {
+        double result = 0;
+        if(investment.records != null && !investment.records.isEmpty() ){
+            LocalDate start = investment.getCreationDate() ;
+            LocalDate stop = LocalDate.now();
+            long months = ChronoUnit.MONTHS.between( start , stop );
+
+            result = investment.getInvestedAmount()/months;
+        }
+
+        return result;
+    }
+
 
     @Override
     public List<InvestmentValueRecord> getValueRecords(Investment investment) {

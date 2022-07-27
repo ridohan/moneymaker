@@ -105,6 +105,18 @@ public class InvestmentResource {
         return investmentService.calculateAverageAnnualYield(investment,year);
     }
 
+    @GET
+    @Path("/{id}/investedAmount")
+    public Double  getAverageInvestedAmountMonthly(@PathParam("id")  Long id) {
+
+        Investment investment = Investment.findById(id);
+        if(investment == null) {
+            throw new NotFoundException();
+        }
+        return investmentService.getAverageInvestedAmountMonthly(investment);
+    }
+
+
 
 
     @GET

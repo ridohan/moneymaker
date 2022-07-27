@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -27,6 +28,8 @@ public class Investment extends PanacheEntity {
     public Set<InvestmentValueRecord> records = new HashSet<>();
 
 
+    public LocalDate creationDate;
+
     public static Investment findByName(String name){
         return find("name", name).firstResult();
     }
@@ -35,15 +38,25 @@ public class Investment extends PanacheEntity {
         this.name = name;
     }
 
-    public Investment(String name,InvestmentCategory investmentCategory) {
+    public Investment(String name,InvestmentCategory investmentCategory, LocalDate date) {
         this.name = name;
         this.category = investmentCategory;
+        this.creationDate = date;
     }
 
     public Investment() {
 
     }
 
+    public LocalDate getCreationDate()
+    {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate)
+    {
+        this.creationDate = creationDate;
+    }
 
     public double getYield() {
         return (getValue()/getInvestedAmount())-1;
