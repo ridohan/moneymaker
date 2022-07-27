@@ -44,11 +44,7 @@ public class InvestmentResource {
         return Investment.findById(id);
     }
 
-    @GET
-    @Path("/{id}/records")
-    public List<InvestmentValueRecord> getRecords(@PathParam("id") Long id) {
-        return investmentService.getValueRecords(Investment.findById(id));
-    }
+
 
     @POST
     @Transactional
@@ -127,6 +123,13 @@ public class InvestmentResource {
     }
 
 
+    @GET
+    @Path("/{id}/records")
+    public List<InvestmentValueRecord> getRecords(@PathParam("id") Long id) {
+        return investmentService.getValueRecords(Investment.findById(id));
+    }
+
+
     @POST
     @Path("/{id}/records")
     @Transactional
@@ -159,6 +162,8 @@ public class InvestmentResource {
         }
     }
 
+
+
     @DELETE
     @Path("/{id}/records/{recordId}")
     @Transactional
@@ -167,7 +172,7 @@ public class InvestmentResource {
         if(investmentEntity == null) {
             throw new NotFoundException();
         }else{
-             investmentService.deleteValueRecord(investmentEntity,recordId);
+            investmentService.deleteValueRecord(investmentEntity,recordId);
         }
     }
 
