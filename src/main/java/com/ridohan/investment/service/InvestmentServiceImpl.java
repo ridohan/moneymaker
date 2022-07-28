@@ -59,14 +59,12 @@ public class InvestmentServiceImpl implements InvestmentService {
     @Override
     public double getAverageInvestedAmountMonthly(Investment investment)
     {
-        double result = 0;
-        if(investment.records != null && !investment.records.isEmpty() ){
-            LocalDate start = investment.getCreationDate() ;
-            LocalDate stop = LocalDate.now();
-            long months = ChronoUnit.MONTHS.between( start , stop );
+        double result;
+        LocalDate start = investment.getCreationDate() ;
+        LocalDate stop = LocalDate.now();
+        long months = ChronoUnit.MONTHS.between( start , stop );
 
-            result = investment.getInvestedAmount()/months;
-        }
+        result = investment.getInvestedAmount()/months;
 
         return result;
     }

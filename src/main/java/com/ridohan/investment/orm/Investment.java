@@ -6,6 +6,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Entity
@@ -90,6 +91,18 @@ public class Investment extends PanacheEntity {
 
     public double getDelta() {
         return (getValue()-getInvestedAmount());
+    }
+
+    public double getAverageInvestedAmountMonthly()
+    {
+        double result;
+        LocalDate start = this.getCreationDate() ;
+        LocalDate stop = LocalDate.now();
+        long months = ChronoUnit.MONTHS.between( start , stop );
+
+        result = this.getInvestedAmount()/months;
+
+        return result;
     }
 
 
